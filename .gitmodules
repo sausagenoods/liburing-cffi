@@ -1,4 +1,4 @@
 [submodule "libs/liburing"]
 	path = libs/liburing
-	url = https://github.com/axboe/liburing.git
+	url = https://github.com/axboe/liburing
 	branch = liburing-2.3
