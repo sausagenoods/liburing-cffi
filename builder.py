@@ -14,9 +14,11 @@ os.chdir('../../')
 
 ffi = cffi.FFI()
 
+
 source_code = '''
     #include <fcntl.h>       /* statx(2) - Definition of AT_* constants */
     #include <netinet/in.h>
+    #include <sys/socket.h>
     #include "liburing.h"
 
     /* since linux 5.5 */
@@ -36,11 +38,16 @@ ffi.set_source('liburing._liburing', source_code,
                         './libs/liburing/src/register.c',
                         './libs/liburing/src/setup.c',
                         './libs/liburing/src/syscall.c'],
-               include_dirs=['./libs/liburing/src/include'])
+               include_dirs=['./libs/liburing/src/include'],
+               extra_compile_args=['-D _GNU_SOURCE'])
 
 
 # Socket
 ffi.cdef('''
+    #define AF_INET ...
+    #define SOCK_STREAM ...
+    #define SOCK_DGRAM ...
+
     typedef int...  socklen_t;
     typedef int...  in_addr_t;
     typedef int...  sa_family_t;
@@ -139,7 +146,7 @@ ffi.cdef('''
         size_t ring_sz;
         void *ring_ptr;
 
-        unsigned pad[4];
+        ...;
     };
 
     struct io_uring_cq {
@@ -154,7 +161,7 @@ ffi.cdef('''
         size_t ring_sz;
         void *ring_ptr;
 
-        unsigned pad[4];
+        ...;
     };
 
     struct io_uring {
@@ -164,7 +171,7 @@ ffi.cdef('''
         int ring_fd;
 
         unsigned features;
-        unsigned pad[3];
+        ...;
     };
 
     /*
@@ -292,6 +299,9 @@ ffi.cdef('''
     static inline void io_uring_prep_accept(struct io_uring_sqe *sqe, int fd,
                     struct sockaddr *addr,
                     socklen_t *addrlen, int flags);
+    static inline void io_uring_prep_socket(struct io_uring_sqe *sqe, int domain,
+			int type, int protocol,
+			unsigned flags);
     static inline void io_uring_prep_cancel(struct io_uring_sqe *sqe, void *user_data,
                     int flags);
     static inline void io_uring_prep_link_timeout(struct io_uring_sqe *sqe,

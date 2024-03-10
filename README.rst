@@ -1,6 +1,8 @@
 Liburing
 ========
 
+For latest and greatest use this library instead: https://github.com/YoSTEALTH/Liburing
+
 This is a Python + CFFI wrapper around Liburing C library, which is a helper to setup and tear-down ``io_uring`` instances.
 
 Read how to use `Liburing`_ (pdf)
@@ -45,7 +47,7 @@ Install directly from GitHub:
 To find out all the functions and definitions:
 
 .. code-block:: python
-    
+
     import liburing
 
     help(liburing)
@@ -54,7 +56,7 @@ To find out all the functions and definitions:
 Find out which ``io_uring`` operations is supported by the kernel:
 
 .. code-block:: python
-    
+
     import liburing
 
     probe = liburing.probe()
@@ -154,7 +156,7 @@ TODO
     - Development Status :: 4 - Beta
     - create example
     - Development Status :: 5 - Production/Stable
-    
+
 
 .. _pip: https://pip.pypa.io/en/stable/quickstart/
 .. _Read more: https://github.com/YoSTEALTH/Liburing/blob/master/LICENSE.txt
